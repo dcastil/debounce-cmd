@@ -3,9 +3,10 @@
 import hardRejection from 'hard-rejection'
 import sade from 'sade'
 
-import { showCacheDirectory } from './cache-dir'
-
 import { version } from '../package.json'
+
+import { showCacheDirectory } from './cache-dir'
+import { clearCacheDirectory } from './cache-clear'
 
 hardRejection()
 
@@ -44,6 +45,16 @@ program
         showCacheDirectory(cacheDir)
     })
 
-program.command('cache clear', 'Clear cache used by debounce-cmd')
+program
+    .command('cache clear', 'Clear cache used by debounce-cmd')
+    .action((options: Record<string, unknown>) => {
+        const cacheDir = options['cache-dir']
+
+        if (cacheDir !== undefined && typeof cacheDir !== 'string') {
+            throw Error('Invalid --cache-dir supplied')
+        }
+
+        clearCacheDirectory(cacheDir)
+    })
 
 program.parse(process.argv)

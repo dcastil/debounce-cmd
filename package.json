@@ -33,6 +33,7 @@
         "build": "rm -rf 'dist/*' && microbundle --strict --target node --output dist/cli.ts --format cjs --generateTypes false"
     },
     "dependencies": {
+        "del": "^6.0.0",
         "find-cache-dir": "^3.3.2",
         "hard-rejection": "^2.1.0",
         "make-dir": "^3.1.0",
