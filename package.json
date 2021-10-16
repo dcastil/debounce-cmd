@@ -32,7 +32,9 @@
     "scripts": {
         "debounce-cmd": "node ./dist/cli.cjs",
         "build": "rm -rf dist/* && microbundle --strict --target node --output dist/cli.ts --format cjs --generateTypes false",
-        "type-check": "tsc --build"
+        "type-check": "tsc --build",
+        "preversion": "git checkout main && git pull",
+        "postversion": "git push --follow-tags && open https://github.com/dcastil/debounce-cmd/releases"
     },
     "dependencies": {
         "date-fns": "^2.25.0",
