@@ -30,7 +30,8 @@
         "url": "https://github.com/dcastil/debounce-cmd.git"
     },
     "scripts": {
-        "build": "rm -rf dist/* && microbundle --strict --target node --output dist/cli.ts --format cjs --generateTypes false"
+        "build": "rm -rf dist/* && microbundle --strict --target node --output dist/cli.ts --format cjs --generateTypes false",
+        "type-check": "tsc --build"
     },
     "dependencies": {
         "date-fns": "^2.25.0",
