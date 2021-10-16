@@ -33,14 +33,21 @@
         "build": "rm -rf 'dist/*' && microbundle --strict --target node --output dist/cli.ts --format cjs --generateTypes false"
     },
     "dependencies": {
+        "date-fns": "^2.25.0",
         "del": "^6.0.0",
+        "exec-sh": "^0.4.0",
         "find-cache-dir": "^3.3.2",
+        "flat-cache": "^3.0.4",
         "hard-rejection": "^2.1.0",
+        "hasha": "^5.2.2",
+        "lodash": "^4.17.21",
         "make-dir": "^3.1.0",
         "sade": "^1.7.4"
     },
     "devDependencies": {
         "@types/find-cache-dir": "^3.2.1",
+        "@types/flat-cache": "^2.0.0",
+        "@types/lodash": "^4.14.175",
         "@types/sade": "^1.7.3",
         "microbundle": "^0.14.1",
         "prettier": "^2.4.1",

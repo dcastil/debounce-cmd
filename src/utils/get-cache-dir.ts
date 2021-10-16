@@ -19,18 +19,18 @@ export function getCacheDirectoryPath(relativeCacheDirectoryPath: string | undef
     return resolvedCacheDirectory
 }
 
-export function createGetCachePath(relativeCacheDirectoryPath: string | undefined) {
+export function createCache(relativeCacheDirectoryPath: string | undefined) {
     if (relativeCacheDirectoryPath) {
         const absoluteCacheDirectoryPath = makeDir.sync(relativeCacheDirectoryPath)
 
-        return (...args: string[]) => path.join(absoluteCacheDirectoryPath, ...args)
+        return absoluteCacheDirectoryPath
     }
 
-    const resolvedGetCachePath = findCacheDir({ name, create: true, thunk: true })
+    const resolvedCachePath = findCacheDir({ name, create: true })
 
-    if (!resolvedGetCachePath) {
+    if (!resolvedCachePath) {
         throw Error('Could not find cache directory. Please provide a cache directory manually.')
     }
 
-    return resolvedGetCachePath
+    return resolvedCachePath
 }
