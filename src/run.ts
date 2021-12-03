@@ -23,7 +23,7 @@ export async function debounceCommand({
     command,
 }: DebounceCommandProps) {
     if (!debounceByTime && debounceByFiles.length === 0) {
-        execSh(command)
+        await execSh.promise(command)
         return
     }
 
@@ -63,5 +63,5 @@ export async function debounceCommand({
     })
     cache.save(true)
 
-    execSh(command)
+    await execSh.promise(command)
 }
