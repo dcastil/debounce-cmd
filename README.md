@@ -54,4 +54,4 @@ You can use it to execute commands conditionally in `package.json` scripts.
 
 ## Contribute
 
-If you find a bug or something you don't like, please [submit an issue](https://github.com/dcastil/debounce-cmd/issues/new) or a pull request. I'm happy about any kind of feedback!
+If you find a bug or something you don't like, please [submit an issue](https://github.com/dcastil/cache-cmd/issues/new) or a pull request. I'm happy about any kind of feedback!
