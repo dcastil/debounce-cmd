@@ -13,10 +13,12 @@ categories:
       label: 'needs changelog edit'
     - title: 'Breaking Changes'
       label: 'breaking'
-    - title: 'Features'
+    - title: 'New Features'
       label: 'feature'
     - title: 'Bug Fixes'
-      label: 'bugfix'
+      label: 'bug'
+    - title: 'Documentation'
+      label: 'documentation'
     - title: 'Other'
       label: 'other'
 exclude-labels:
@@ -30,23 +32,29 @@ version-resolver:
             - 'feature'
     patch:
         labels:
-            - 'bugfix'
+            - 'bug'
+            - 'documentation'
             - 'other'
     default: 'patch'
 autolabeler:
     - label: 'feature'
       branch:
-          - '/feature/i'
+          - '/\bfeature\b/i'
       title:
-          - '/feature/i'
-    - label: 'bugfix'
+          - '/\bfeature\b/i'
+    - label: 'bug'
       branch:
-          - '/fix/i'
+          - '/\b(bug|bugfix|fix)\b/i'
       title:
-          - '/fix/i'
+          - '/\b(bug|bugfix|fix)\b/i'
+    - label: 'documentation'
+      branch:
+          - '/\b(documentation|docs)\b/i'
+      title:
+          - '/\b(documentation|docs)\b/i'
     - label: 'other'
       branch:
-          - '/^other/i'
+          - '/^other\b/i'
     - label: 'breaking'
       branch:
           - '/^breaking-/i'
