@@ -34,8 +34,8 @@
         "cache-cmd": "node ./dist/cli.cjs",
         "build": "rm -rf dist/* && microbundle --strict --target node --output dist/cli.ts --format cjs --generateTypes false",
         "type-check": "tsc --build",
-        "preversion": "git checkout main && git pull",
-        "postversion": "git push --follow-tags && open https://github.com/dcastil/debounce-cmd/releases"
+        "preversion": "if [ -n \"$DANYS_MACHINE\" ]; then git checkout main && git pull; fi",
+        "postversion": "if [ -n \"$DANYS_MACHINE\" ]; then git push --follow-tags && open https://github.com/dcastil/debounce-cmd/releases; fi"
     },
     "dependencies": {
         "date-fns": "^2.25.0",
