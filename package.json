@@ -1,7 +1,7 @@
 {
     "name": "cache-cmd",
     "version": "0.2.0",
-    "description": "Cache a command based on various factors",
+    "description": "Run and cache a command based on various factors",
     "keywords": [
         "cache",
         "debounce",
@@ -23,7 +23,7 @@
         "dist",
         "src"
     ],
-    "bin": "dist/cli.cjs",
+    "bin": "dist/cli.js",
     "type": "module",
     "source": "src/cli.ts",
     "repository": {
@@ -31,31 +31,31 @@
         "url": "https://github.com/dcastil/cache-cmd.git"
     },
     "scripts": {
-        "cache-cmd": "node ./dist/cli.cjs",
-        "build": "rm -rf dist/* && microbundle --strict --target node --output dist/cli.ts --format cjs --generateTypes false",
+        "cache-cmd": "node ./dist/cli.js",
+        "build": "rm -rf dist/* && esbuild src/cli.ts --bundle --platform=node --target=node20 --packages=external --format=esm --sourcemap --outfile=dist/cli.js",
         "type-check": "tsc --build",
         "preversion": "if [ -n \"$DANYS_MACHINE\" ]; then git checkout main && git pull; fi",
         "postversion": "if [ -n \"$DANYS_MACHINE\" ]; then git push --follow-tags && open https://github.com/dcastil/cache-cmd/releases; fi"
     },
     "dependencies": {
-        "date-fns": "^2.25.0",
-        "del": "^6.0.0",
+        "date-fns": "^4.1.0",
+        "del": "^8.0.0",
         "exec-sh": "^0.4.0",
-        "find-cache-dir": "^3.3.2",
-        "flat-cache": "^3.0.4",
+        "find-cache-dir": "^5.0.0",
+        "flat-cache": "^6.1.3",
         "hard-rejection": "^2.1.0",
-        "hasha": "^5.2.2",
-        "lodash": "^4.17.21",
-        "make-dir": "^3.1.0",
-        "sade": "^1.7.4"
+        "hasha": "^6.0.0",
+        "lodash-es": "^4.17.21",
+        "sade": "^1.8.1"
     },
     "devDependencies": {
-        "@types/find-cache-dir": "^3.2.1",
-        "@types/flat-cache": "^2.0.0",
-        "@types/lodash": "^4.14.175",
-        "@types/sade": "^1.7.3",
-        "microbundle": "^0.14.1",
-        "prettier": "^2.4.1",
-        "typescript": "^4.4.4"
+        "@types/find-cache-dir": "^5.0.2",
+        "@types/flat-cache": "^2.0.2",
+        "@types/lodash-es": "^4.17.12",
+        "@types/node": "^22.10.1",
+        "@types/sade": "^1.8.0",
+        "esbuild": "^0.24.0",
+        "prettier": "^3.4.2",
+        "typescript": "^5.7.2"
     }
 }

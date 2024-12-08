@@ -1,7 +1,6 @@
 import path from 'path'
 
 import findCacheDir from 'find-cache-dir'
-import makeDir from 'make-dir'
 
 import { name } from '../../package.json'
 
@@ -17,20 +16,4 @@ export function getCacheDirectoryPath(relativeCacheDirectoryPath: string | undef
     }
 
     return resolvedCacheDirectory
-}
-
-export function createCache(relativeCacheDirectoryPath: string | undefined) {
-    if (relativeCacheDirectoryPath) {
-        const absoluteCacheDirectoryPath = makeDir.sync(relativeCacheDirectoryPath)
-
-        return absoluteCacheDirectoryPath
-    }
-
-    const resolvedCachePath = findCacheDir({ name, create: true })
-
-    if (!resolvedCachePath) {
-        throw Error('Could not find cache directory. Please provide a cache directory manually.')
-    }
-
-    return resolvedCachePath
 }

@@ -1,9 +1,9 @@
-import del from 'del'
+import { deleteSync } from 'del'
 
 import { getCacheDirectoryPath } from './utils/get-cache-dir'
 
 export function clearCacheDirectory(relativeCacheDirectory: string | undefined) {
-    const deletedPaths = del.sync(getCacheDirectoryPath(relativeCacheDirectory))
+    const deletedPaths = deleteSync(getCacheDirectoryPath(relativeCacheDirectory))
 
     if (deletedPaths.length === 0) {
         console.log('No cache to clear')

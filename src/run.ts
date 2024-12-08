@@ -1,9 +1,9 @@
 import { add, isAfter } from 'date-fns'
 import execSh from 'exec-sh'
-import flatCache from 'flat-cache'
-import { isEqual } from 'lodash'
+import { create } from 'flat-cache'
+import { isEqual } from 'lodash-es'
 
-import { createCache } from './utils/get-cache-dir'
+import { getCacheDirectoryPath } from './utils/get-cache-dir'
 import { getCacheKey } from './utils/get-cache-key'
 import { getDuration } from './utils/get-duration'
 import { getFileHashes } from './utils/get-file-hashes'
@@ -30,7 +30,11 @@ export async function runCommand({
         return
     }
 
-    const cache = flatCache.load('commands-cache.json', createCache(relativeCacheDirectory))
+    const cache = create({
+        cacheId: 'commands-cache.json',
+        cacheDir: getCacheDirectoryPath(relativeCacheDirectory),
+        lruSize: 10_000,
+    })
     const filePaths = getFilePaths(cacheByFiles)
     const duration = cacheByTime ? getDuration(cacheByTime) : undefined
 
@@ -63,7 +67,7 @@ export async function runCommand({
                 [fileHashes && 'unchanged files', duration && 'being within cache time']
                     .filter(Boolean)
                     .join(' and '),
-            ].join(' ')
+            ].join(' '),
         )
         return
     }
@@ -74,7 +78,7 @@ export async function runCommand({
             [fileHashes && 'changed files', duration && 'cache time passing']
                 .filter(Boolean)
                 .join(' and '),
-        ].join(' ')
+        ].join(' '),
     )
     let execPromise = execSh.promise(command)
 
