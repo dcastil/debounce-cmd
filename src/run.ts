@@ -52,7 +52,7 @@ export async function debounceCommand({
             return false
         }
 
-        return isAfter(add(new Date(lastRun), duration!), currentDate)
+        return isAfter(add(new Date(lastRun), duration), currentDate)
     })()
 
     if (areFileHashesEqual && isCurrentTimeInDebounce) {
