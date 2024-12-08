@@ -39,6 +39,9 @@ npm exec -- cache-cmd cache dir
 
 # Clear cache
 npm exec -- cache-cmd cache clear
+
+# You can also run it with npx to skip the install step
+npx cache-cmd "echo ran this command" --time 20s
 ```
 
 You can use it to execute commands conditionally in `package.json` scripts.
