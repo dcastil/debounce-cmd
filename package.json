@@ -1,6 +1,6 @@
 {
     "name": "cache-cmd",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Run and cache a command based on various factors",
     "keywords": [
         "cache",
