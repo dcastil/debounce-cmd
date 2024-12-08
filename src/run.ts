@@ -25,6 +25,7 @@ export async function runCommand({
     shouldCacheOnError,
 }: RunCommandProps) {
     if (!cacheByTime && cacheByFiles.length === 0) {
+        console.log(`Executing command "${command}" due to no caching options provided`)
         await execSh.promise(command)
         return
     }
@@ -56,18 +57,39 @@ export async function runCommand({
     })()
 
     if (areFileHashesEqual && isWithinCacheTime) {
+        console.log(
+            [
+                `Skipping command "${command}" due to`,
+                [fileHashes && 'unchanged files', duration && 'being within cache time']
+                    .filter(Boolean)
+                    .join(' and '),
+            ].join(' ')
+        )
         return
     }
 
+    console.log(
+        [
+            `Executing command "${command}" due to`,
+            [fileHashes && 'changed files', duration && 'cache time passing']
+                .filter(Boolean)
+                .join(' and '),
+        ].join(' ')
+    )
     let execPromise = execSh.promise(command)
+
+    function setCache() {
+        cache.setKey(cacheKey, {
+            lastRun: currentDate,
+            fileHashes,
+        })
+        cache.save(true)
+        console.log(`Cache saved for command "${command}"`)
+    }
 
     if (shouldCacheOnError) {
         execPromise = execPromise.catch((error: unknown) => {
-            cache.setKey(cacheKey, {
-                lastRun: currentDate,
-                fileHashes,
-            })
-            cache.save(true)
+            setCache()
 
             throw error
         })
@@ -75,9 +97,5 @@ export async function runCommand({
 
     await execPromise
 
-    cache.setKey(cacheKey, {
-        lastRun: currentDate,
-        fileHashes,
-    })
-    cache.save(true)
+    setCache()
 }
