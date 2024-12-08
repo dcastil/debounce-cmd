@@ -1,6 +1,6 @@
-# debounce-cmd
+# cache-cmd
 
-Debounce a command based on
+Cache a command based on
 
 -   time since last run
 -   file change
@@ -8,38 +8,38 @@ Debounce a command based on
 ## Install
 
 ```sh
-yarn add --dev debounce-cmd
+yarn add --dev cache-cmd
 ```
 
 or
 
 ```sh
-npm install --save-dev debounce-cmd
+npm install --save-dev cache-cmd
 ```
 
 ## Usage
 
 ```sh
 # Shows help
-yarn debounce-cmd --help
+yarn cache-cmd --help
 
 # Runs command if it was not run in the last 20s
-yarn debounce-cmd "echo ran this command" --time 20s
+yarn cache-cmd "echo ran this command" --time 20s
 
 # Runs comand if yarn.lock in current directory changed since last run
-yarn debounce-cmd "yarn install" --file yarn.lock
+yarn cache-cmd "yarn install" --file yarn.lock
 
 # Additionally uses custom cache directory instead of default in node_modules
-yarn debounce-cmd "yarn install" --file yarn.lock --cache-dir .config/cache
+yarn cache-cmd "yarn install" --file yarn.lock --cache-dir .config/cache
 
 # Runs command if it was not run in a month or any of the files changed
-yarn debounce-cmd "yarn install" --time 1mo --file yarn.lock --file package.json
+yarn cache-cmd "yarn install" --time 1mo --file yarn.lock --file package.json
 
 # Shows path to cache directory
-yarn debounce-cmd cache dir
+yarn cache-cmd cache dir
 
 # Clear cache
-yarn debounce-cmd cache clear
+yarn cache-cmd cache clear
 ```
 
 You can use it to execute commands conditionally in `package.json` scripts.
@@ -47,7 +47,7 @@ You can use it to execute commands conditionally in `package.json` scripts.
 ```json
 {
     "scripts": {
-        "dev": "debounce-cmd \"yarn\" --file yarn.lock && start-dev-server"
+        "dev": "cache-cmd \"yarn\" --file yarn.lock && start-dev-server"
     }
 }
 ```

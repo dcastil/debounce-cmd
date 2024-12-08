@@ -9,29 +9,29 @@ import { getDuration } from './utils/get-duration'
 import { getFileHashes } from './utils/get-file-hashes'
 import { getFilePaths } from './utils/get-file-paths'
 
-interface DebounceCommandProps {
+interface RunCommandProps {
     relativeCacheDirectory: string | undefined
     command: string
-    debounceByTime: string | undefined
-    debounceByFiles: string[]
+    cacheByTime: string | undefined
+    cacheByFiles: string[]
     shouldCacheOnError: boolean | undefined
 }
 
-export async function debounceCommand({
+export async function runCommand({
     relativeCacheDirectory,
     command,
-    debounceByTime,
-    debounceByFiles,
+    cacheByTime: cacheByTime,
+    cacheByFiles: cacheByFiles,
     shouldCacheOnError,
-}: DebounceCommandProps) {
-    if (!debounceByTime && debounceByFiles.length === 0) {
+}: RunCommandProps) {
+    if (!cacheByTime && cacheByFiles.length === 0) {
         await execSh.promise(command)
         return
     }
 
     const cache = flatCache.load('commands-cache.json', createCache(relativeCacheDirectory))
-    const filePaths = getFilePaths(debounceByFiles)
-    const duration = debounceByTime ? getDuration(debounceByTime) : undefined
+    const filePaths = getFilePaths(cacheByFiles)
+    const duration = cacheByTime ? getDuration(cacheByTime) : undefined
 
     const cacheKey = getCacheKey({ duration, filePaths, command })
 
@@ -41,7 +41,7 @@ export async function debounceCommand({
     const currentDate = new Date()
 
     const areFileHashesEqual = isEqual((cacheData as any)?.fileHashes, fileHashes)
-    const isCurrentTimeInDebounce = (() => {
+    const isWithinCacheTime = (() => {
         if (!duration) {
             return true
         }
@@ -55,7 +55,7 @@ export async function debounceCommand({
         return isAfter(add(new Date(lastRun), duration), currentDate)
     })()
 
-    if (areFileHashesEqual && isCurrentTimeInDebounce) {
+    if (areFileHashesEqual && isWithinCacheTime) {
         return
     }
 

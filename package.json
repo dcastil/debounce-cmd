@@ -1,8 +1,9 @@
 {
-    "name": "debounce-cmd",
+    "name": "cache-cmd",
     "version": "0.2.0",
-    "description": "Debounce a command based on various factors",
+    "description": "Cache a command based on various factors",
     "keywords": [
+        "cache",
         "debounce",
         "cli",
         "conditional",
@@ -30,7 +31,7 @@
         "url": "https://github.com/dcastil/debounce-cmd.git"
     },
     "scripts": {
-        "debounce-cmd": "node ./dist/cli.cjs",
+        "cache-cmd": "node ./dist/cli.cjs",
         "build": "rm -rf dist/* && microbundle --strict --target node --output dist/cli.ts --format cjs --generateTypes false",
         "type-check": "tsc --build",
         "preversion": "git checkout main && git pull",

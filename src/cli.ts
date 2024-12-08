@@ -7,24 +7,24 @@ import { version } from '../package.json'
 
 import { clearCacheDirectory } from './cache-clear'
 import { showCacheDirectory } from './cache-dir'
-import { debounceCommand } from './run'
+import { runCommand } from './run'
 
 hardRejection()
 
-const program = sade('debounce-cmd')
+const program = sade('cache-cmd')
 
 program
     .version(version)
-    .describe('Debounce a command based on various factors')
+    .describe('Run and cache a command based on various factors')
     .option(
         '-c, --cache-dir',
-        'Cache directory to use (default: .cache/debounce-cmd in nearest node_modules)'
+        'Cache directory to use (default: .cache/cache-cmd in nearest node_modules)'
     )
 
 program
     .command(
         'run <command>',
-        'Run debounced command (if no <command> provided, this is the default)',
+        'Run cached command (if no <command> provided, this is the default)',
         { default: true }
     )
     .option('-f, --file', 'Run command only when file content changes')
@@ -62,17 +62,17 @@ program
             throw Error('Invalid --cache-on-error supplied')
         }
 
-        debounceCommand({
+        runCommand({
             relativeCacheDirectory: cacheDirectory,
             command,
-            debounceByTime: time,
-            debounceByFiles: files as string[],
+            cacheByTime: time,
+            cacheByFiles: files as string[],
             shouldCacheOnError,
         })
     })
 
 program
-    .command('cache dir', 'Show cache directory path used by debounce-cmd')
+    .command('cache dir', 'Show cache directory path used by cache-cmd')
     .action((options: Record<string, unknown>) => {
         const cacheDirectory = options['cache-dir']
 
@@ -84,7 +84,7 @@ program
     })
 
 program
-    .command('cache clear', 'Clear cache used by debounce-cmd')
+    .command('cache clear', 'Clear cache used by cache-cmd')
     .action((options: Record<string, unknown>) => {
         const cacheDirectory = options['cache-dir']
 
