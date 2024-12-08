@@ -5,8 +5,8 @@ import sade from 'sade'
 
 import { version } from '../package.json'
 
-import { showCacheDirectory } from './cache-dir'
 import { clearCacheDirectory } from './cache-clear'
+import { showCacheDirectory } from './cache-dir'
 import { debounceCommand } from './run'
 
 hardRejection()
@@ -29,7 +29,9 @@ program
     )
     .option('-f, --file', 'Run command only when file content changes')
     .option('-t, --time', 'Run command only after specified time (unit with s,m,h,d,w,mo,y)')
+    .option('--cache-on-error', 'Cache command run even when command exits with non-zero exit code')
     .example('run "echo ran this command" --time 20s')
+    .example('run "./may-fail" --time 20s --cache-on-error')
     .example('run "yarn install" --file yarn.lock')
     .example('run "yarn install" --file yarn.lock --cache-dir .config/cache')
     .example('run "yarn install" --time 1mo --file yarn.lock --file package.json')
@@ -37,6 +39,7 @@ program
         const cacheDirectory = options['cache-dir']
         const time = options.time
         const file = options.file
+        const shouldCacheOnError = options['cache-on-error']
         const files: unknown[] = file === undefined ? [] : Array.isArray(file) ? file : [file]
 
         if (typeof command !== 'string') {
@@ -55,11 +58,16 @@ program
             throw Error('Invalid --file supplied')
         }
 
+        if (shouldCacheOnError !== undefined && typeof shouldCacheOnError !== 'boolean') {
+            throw Error('Invalid --cache-on-error supplied')
+        }
+
         debounceCommand({
             relativeCacheDirectory: cacheDirectory,
             command,
             debounceByTime: time,
             debounceByFiles: files as string[],
+            shouldCacheOnError,
         })
     })
 

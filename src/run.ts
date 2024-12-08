@@ -1,26 +1,28 @@
+import { add, isAfter } from 'date-fns'
 import execSh from 'exec-sh'
 import flatCache from 'flat-cache'
 import { isEqual } from 'lodash'
-import { add, isAfter } from 'date-fns'
 
 import { createCache } from './utils/get-cache-dir'
-import { getFilePaths } from './utils/get-file-paths'
-import { getDuration } from './utils/get-duration'
 import { getCacheKey } from './utils/get-cache-key'
+import { getDuration } from './utils/get-duration'
 import { getFileHashes } from './utils/get-file-hashes'
+import { getFilePaths } from './utils/get-file-paths'
 
 interface DebounceCommandProps {
     relativeCacheDirectory: string | undefined
     command: string
     debounceByTime: string | undefined
     debounceByFiles: string[]
+    shouldCacheOnError: boolean | undefined
 }
 
 export async function debounceCommand({
     relativeCacheDirectory,
+    command,
     debounceByTime,
     debounceByFiles,
-    command,
+    shouldCacheOnError,
 }: DebounceCommandProps) {
     if (!debounceByTime && debounceByFiles.length === 0) {
         await execSh.promise(command)
@@ -57,11 +59,25 @@ export async function debounceCommand({
         return
     }
 
+    let execPromise = execSh.promise(command)
+
+    if (shouldCacheOnError) {
+        execPromise = execPromise.catch((error: unknown) => {
+            cache.setKey(cacheKey, {
+                lastRun: currentDate,
+                fileHashes,
+            })
+            cache.save(true)
+
+            throw error
+        })
+    }
+
+    await execPromise
+
     cache.setKey(cacheKey, {
         lastRun: currentDate,
         fileHashes,
     })
     cache.save(true)
-
-    await execSh.promise(command)
 }
