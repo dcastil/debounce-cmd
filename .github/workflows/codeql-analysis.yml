@@ -16,13 +16,23 @@ jobs:
             security-events: write
 
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v2
+            - uses: actions/checkout@v4
+            - name: Use Node.js 22
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22.12.0
+            - name: Use node_modules cache
+              uses: actions/cache@v4
+              with:
+                  path: node_modules
+                  key: yarn-node-22-${{ hashFiles('yarn.lock') }}
+                  restore-keys: |
+                      yarn-node-22-
             - name: Initialize CodeQL
-              uses: github/codeql-action/init@v1
+              uses: github/codeql-action/init@v3
               with:
                   languages: javascript
             - run: yarn install --frozen-lockfile
             - run: yarn build
             - name: Perform CodeQL Analysis
-              uses: github/codeql-action/analyze@v1
+              uses: github/codeql-action/analyze@v3
