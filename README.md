@@ -1,6 +1,6 @@
 # cache-cmd
 
-Cache a command based on
+Run and cache a command based on
 
 -   time since last run
 -   file change
@@ -8,38 +8,37 @@ Cache a command based on
 ## Install
 
 ```sh
+# Using npm
+npm add --save-dev cache-cmd
+# Using pnpm
+pnpm add --save-dev cache-cmd
+# Using yarn
 yarn add --dev cache-cmd
-```
-
-or
-
-```sh
-npm install --save-dev cache-cmd
 ```
 
 ## Usage
 
 ```sh
 # Shows help
-yarn cache-cmd --help
+npm exec -- cache-cmd --help
 
 # Runs command if it was not run in the last 20s
-yarn cache-cmd "echo ran this command" --time 20s
+npm exec -- cache-cmd "echo ran this command" --time 20s
 
-# Runs comand if yarn.lock in current directory changed since last run
-yarn cache-cmd "yarn install" --file yarn.lock
+# Runs command if package-lock.json in current directory changed since last run
+npm exec -- cache-cmd "npm install" --file package-lock.json
 
 # Additionally uses custom cache directory instead of default in node_modules
-yarn cache-cmd "yarn install" --file yarn.lock --cache-dir .config/cache
+npm exec -- cache-cmd "npm install" --file package-lock.json --cache-dir .config/cache
 
 # Runs command if it was not run in a month or any of the files changed
-yarn cache-cmd "yarn install" --time 1mo --file yarn.lock --file package.json
+npm exec -- cache-cmd "npm install" --time 1mo --file package-lock.json --file package.json
 
 # Shows path to cache directory
-yarn cache-cmd cache dir
+npm exec -- cache-cmd cache dir
 
 # Clear cache
-yarn cache-cmd cache clear
+npm exec -- cache-cmd cache clear
 ```
 
 You can use it to execute commands conditionally in `package.json` scripts.
@@ -47,7 +46,7 @@ You can use it to execute commands conditionally in `package.json` scripts.
 ```json
 {
     "scripts": {
-        "dev": "cache-cmd \"yarn\" --file yarn.lock && start-dev-server"
+        "start-dev": "cache-cmd \"npm install\" --file package-lock.json && start-dev-server"
     }
 }
 ```
