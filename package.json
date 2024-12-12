@@ -32,7 +32,7 @@
     "source": "src/cli.ts",
     "repository": {
         "type": "git",
-        "url": "https://github.com/dcastil/cache-cmd.git"
+        "url": "git+https://github.com/dcastil/cache-cmd.git"
     },
     "scripts": {
         "cache-cmd": "node ./dist/cli.js",
